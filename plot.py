@@ -1,4 +1,4 @@
-from plot_point import Plot_point, is_NaN, number, iterable
+from plot_point import Plot_point, number, iterable
 from linear_eq import Linear_eq
 
 import math
@@ -333,7 +333,7 @@ class Scattered(Plot):
 
             p_x = [p.x() for p in serie.points()]
             p_val = [p.y() for p in serie.points()]
-            p_err = [p.stdev() if errorbar and p.stdev() > 0 else math.nan for p in serie.points()]
+            p_err = [p.stdev() if errorbar and p.stdev() > 0 else None for p in serie.points()]
 
             new_figure_axis.errorbar(x=p_x, y=p_val, yerr=p_err,
                         fmt='o',
@@ -350,7 +350,7 @@ class Scattered(Plot):
                     else: align = "center"
 
                     new_figure_axis.annotate(f"({x:.{px_prec}f}, {y:.{py_prec}f})",
-                                xy=(x, y + (0 if is_NaN(err) else err)),
+                                xy=(x, y + (0 if err is None else err)),
                                 textcoords="offset points", xytext=(0, 6),
                                 ha=align, va="bottom",
                                 fontsize=8)
@@ -491,7 +491,7 @@ class Line(Plot):
             sorted_points = sorted(serie.points(), key=lambda p: p.x())  # so the line runs left to right instead of zigzagging
             p_x = [p.x() for p in sorted_points]
             p_val = [p.y() for p in sorted_points]
-            p_err = [p.stdev() if errorbar and p.stdev() > 0 else math.nan for p in sorted_points]
+            p_err = [p.stdev() if errorbar and p.stdev() > 0 else None for p in sorted_points]
 
             new_figure_axis.errorbar(x=p_x, y=p_val, yerr=p_err,
                         fmt='o-' if show_points else '-',
@@ -510,7 +510,7 @@ class Line(Plot):
                     else: align = "center"
 
                     new_figure_axis.annotate(f"({x:.{px_prec}f}, {y:.{py_prec}f})",
-                                xy=(x, y + (0 if is_NaN(err) else err)),
+                                xy=(x, y + (0 if err is None else err)),
                                 textcoords="offset points", xytext=(0, 6),
                                 ha=align, va="bottom",
                                 fontsize=8)
@@ -654,7 +654,7 @@ class Bar(Plot):
 
             p_x = [p.x() for p in serie.points()]
             p_val = [p.y() for p in serie.points()]
-            p_err = [p.stdev() if errorbar and p.stdev() > 0 else math.nan for p in serie.points()]
+            p_err = [p.stdev() if errorbar and p.stdev() > 0 else None for p in serie.points()]
 
             new_figure_axis.bar([x + offset for x in p_x], p_val, width=single_width,
                         yerr=p_err if errorbar else None,
@@ -665,7 +665,7 @@ class Bar(Plot):
 
             if point_label:
                 for x, y, err in zip(p_x, p_val, p_err):
-                    err = 0 if is_NaN(err) else err
+                    err = 0 if err is None else err
                     upward = y >= 0  # labels sit past the end of the bar, above it or below a negative one
 
                     new_figure_axis.annotate(f"({x:.{px_prec}f}, {y:.{py_prec}f})",
