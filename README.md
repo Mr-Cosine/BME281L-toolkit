@@ -1,5 +1,6 @@
 # BME 281L Toolkit
 
+Toolkit for library for analysis in BME 285
 Python helpers for reading lab data from Excel spreadsheets, organizing it into data points, fitting linear trendlines, and plotting the results.
 
 ## Files
